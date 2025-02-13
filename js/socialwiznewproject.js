@@ -263,51 +263,37 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  function updateActiveState() {
-    document.querySelectorAll(".cms-template-item").forEach((item) => {
+  // Get all items with the class cms-template-item
+  const templateItems = document.querySelectorAll(".cms-template-item");
+
+  // Function to update the active state
+  const updateActiveState = () => {
+    templateItems.forEach((item) => {
       const radioDiv = item.querySelector(".w-form-formradioinput");
       const slideWrap = item.querySelector(".slide_wrap");
-      const radioInput = item.querySelector("input[type='radio']");
 
-      if (radioInput && radioInput.checked) {
-        radioDiv.classList.add("w--redirected-checked");
+      if (radioDiv.classList.contains("w--redirected-checked")) {
         slideWrap.classList.add("active-slide");
       } else {
-        radioDiv.classList.remove("w--redirected-checked");
         slideWrap.classList.remove("active-slide");
       }
     });
-  }
+  };
 
-  function setupRadioListeners() {
-    document.querySelectorAll(".cms-template-item input[type='radio']").forEach((radioInput) => {
-      radioInput.addEventListener("change", () => {
-        updateActiveState(); // Apply active styles when selection changes
-      });
+  // Set up a MutationObserver for each radio button's parent div
+  templateItems.forEach((item) => {
+    const radioDiv = item.querySelector(".w-form-formradioinput");
+    const observer = new MutationObserver(updateActiveState);
+
+    observer.observe(radioDiv, {
+      attributes: true,
+      attributeFilter: ["class"],
     });
-  }
+  });
 
-  function onPaginationChange() {
-    setTimeout(() => {
-      updateActiveState(); // Reapply active-slide class after new items load
-      setupRadioListeners(); // Reattach event listeners to new items
-    }, 500); // Small delay to ensure all elements are fully rendered
-  }
-
-  // Detect pagination updates using Finsweet CMS Load
-  const cmsList = document.querySelector("[fs-cmsload-element='list']");
-  if (cmsList) {
-    const paginationObserver = new MutationObserver(onPaginationChange);
-    paginationObserver.observe(cmsList, { childList: true, subtree: true });
-  }
-
-  // Initial setup
+  // Initial call to set the active state on page load
   updateActiveState();
-  setupRadioListeners();
 });
-
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
   // Function to update the active-image class
@@ -389,6 +375,12 @@ setColorPicker("secondary", "secondary-color"); // Secondary color (background)
 setColorPicker("textcolor", "text-color", "color"); // Text color (text color)
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Select all radio input elements
+  const radioInputs = document.querySelectorAll(
+    '.select-template input[type="radio"]'
+  );
+
+  // Function to update the preview image and colors
   function updatePreview() {
     // Find the currently checked radio button
     const checkedRadio = document.querySelector(
@@ -431,34 +423,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
-
-  function attachRadioListeners() {
-    document
-      .querySelectorAll('.select-template input[type="radio"]')
-      .forEach((input) => {
-        input.addEventListener("change", updatePreview);
-      });
-  }
-
-  function onPaginationChange() {
-    setTimeout(() => {
-      attachRadioListeners(); // Reattach listeners for newly loaded elements
-      updatePreview(); // Ensure preview updates for new pagination content
-    }, 500);
-  }
-
-  // Detect pagination updates using Finsweet CMS Load
-  const cmsList = document.querySelector("[fs-cmsload-element='list']");
-  if (cmsList) {
-    const paginationObserver = new MutationObserver(onPaginationChange);
-    paginationObserver.observe(cmsList, { childList: true, subtree: true });
-  }
-
-  // Initial setup
-  attachRadioListeners();
-  updatePreview();
-});
-
 
   // Add event listeners to radio inputs
   radioInputs.forEach((input) => {
