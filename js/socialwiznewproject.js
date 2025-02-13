@@ -264,25 +264,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", () => {
   // Function to update the active state
-  const updateActiveState = (radioDiv) => {
-    const slideWrap = radioDiv.closest(".cms-template-item").querySelector(".slide_wrap");
-    if (radioDiv.classList.contains("w--redirected-checked")) {
+  const updateActiveState = (radioButton) => {
+    const slideWrap = radioButton.closest(".cms-template-item").querySelector(".slide_wrap");
+    if (radioButton.checked) {
       slideWrap.classList.add("active-slide");
+      console.log(`Active slide added for: ${radioButton.value}`);
     } else {
       slideWrap.classList.remove("active-slide");
+      console.log(`Active slide removed for: ${radioButton.value}`);
     }
   };
 
   // Event delegation for radio buttons
   document.addEventListener("change", (event) => {
-    if (event.target.matches(".w-form-formradioinput")) {
-      updateActiveState(event.target);
+    // Check if the target is a radio button with the name "selected_template"
+    if (event.target.matches('input[name="selected_template"]')) {
+      const radioButton = event.target; // This is the actual radio button
+      console.log(`Radio button clicked: ${radioButton.value}`);
+      updateActiveState(radioButton);
     }
   });
 
   // Initial call to set the active state for already loaded items
-  document.querySelectorAll(".w-form-formradioinput").forEach((radioDiv) => {
-    updateActiveState(radioDiv);
+  document.querySelectorAll('input[name="selected_template"]').forEach((radioButton) => {
+    updateActiveState(radioButton);
   });
 });
 
