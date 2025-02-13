@@ -389,12 +389,6 @@ setColorPicker("secondary", "secondary-color"); // Secondary color (background)
 setColorPicker("textcolor", "text-color", "color"); // Text color (text color)
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Select all radio input elements
-  const radioInputs = document.querySelectorAll(
-    '.select-template input[type="radio"]'
-  );
-
-  // Function to update the preview image and colors
   function updatePreview() {
     // Find the currently checked radio button
     const checkedRadio = document.querySelector(
@@ -437,6 +431,34 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
+
+  function attachRadioListeners() {
+    document
+      .querySelectorAll('.select-template input[type="radio"]')
+      .forEach((input) => {
+        input.addEventListener("change", updatePreview);
+      });
+  }
+
+  function onPaginationChange() {
+    setTimeout(() => {
+      attachRadioListeners(); // Reattach listeners for newly loaded elements
+      updatePreview(); // Ensure preview updates for new pagination content
+    }, 500);
+  }
+
+  // Detect pagination updates using Finsweet CMS Load
+  const cmsList = document.querySelector("[fs-cmsload-element='list']");
+  if (cmsList) {
+    const paginationObserver = new MutationObserver(onPaginationChange);
+    paginationObserver.observe(cmsList, { childList: true, subtree: true });
+  }
+
+  // Initial setup
+  attachRadioListeners();
+  updatePreview();
+});
+
 
   // Add event listeners to radio inputs
   radioInputs.forEach((input) => {
