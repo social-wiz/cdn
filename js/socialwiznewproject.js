@@ -262,38 +262,38 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Get all items with the class cms-template-item
-  const templateItems = document.querySelectorAll(".cms-template-item");
+// document.addEventListener("DOMContentLoaded", () => {
+//   // Get all items with the class cms-template-item
+//   const templateItems = document.querySelectorAll(".cms-template-item");
 
-  // Function to update the active state
-  const updateActiveState = () => {
-    templateItems.forEach((item) => {
-      const radioDiv = item.querySelector(".w-form-formradioinput");
-      const slideWrap = item.querySelector(".slide_wrap");
+//   // Function to update the active state
+//   const updateActiveState = () => {
+//     templateItems.forEach((item) => {
+//       const radioDiv = item.querySelector(".w-form-formradioinput");
+//       const slideWrap = item.querySelector(".slide_wrap");
 
-      if (radioDiv.classList.contains("w--redirected-checked")) {
-        slideWrap.classList.add("active-slide");
-      } else {
-        slideWrap.classList.remove("active-slide");
-      }
-    });
-  };
+//       if (radioDiv.classList.contains("w--redirected-checked")) {
+//         slideWrap.classList.add("active-slide");
+//       } else {
+//         slideWrap.classList.remove("active-slide");
+//       }
+//     });
+//   };
 
-  // Set up a MutationObserver for each radio button's parent div
-  templateItems.forEach((item) => {
-    const radioDiv = item.querySelector(".w-form-formradioinput");
-    const observer = new MutationObserver(updateActiveState);
+//   // Set up a MutationObserver for each radio button's parent div
+//   templateItems.forEach((item) => {
+//     const radioDiv = item.querySelector(".w-form-formradioinput");
+//     const observer = new MutationObserver(updateActiveState);
 
-    observer.observe(radioDiv, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-  });
+//     observer.observe(radioDiv, {
+//       attributes: true,
+//       attributeFilter: ["class"],
+//     });
+//   });
 
-  // Initial call to set the active state on page load
-  updateActiveState();
-});
+//   // Initial call to set the active state on page load
+//   updateActiveState();
+// });
 
 document.addEventListener("DOMContentLoaded", () => {
   // Function to update the active-image class
