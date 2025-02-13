@@ -353,15 +353,13 @@ setColorPicker("textcolor", "text-color", "color"); // Text color (text color)
 document.addEventListener("DOMContentLoaded", function () {
   // Select all radio input elements
   const radioInputs = document.querySelectorAll(
-    '.select-template input[type="radio"]'
+    'input[name="selected_template"]'
   );
 
   // Function to update the preview image and colors
   function updatePreview() {
     // Find the currently checked radio button
-    const checkedRadio = document.querySelector(
-      '.select-template input[type="radio"]:checked'
-    );
+    const checkedRadio = document.querySelector('input[name="selected_template"]:checked')
     if (checkedRadio) {
       // Find the parent list item of the checked radio
       const parentItem = checkedRadio.closest(".cms-template-item");
