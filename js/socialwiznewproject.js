@@ -265,7 +265,18 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", () => {
   // Function to update the active state
   const updateActiveState = (radioButton) => {
-    const slideWrap = radioButton.closest(".cms-template-item").querySelector(".slide_wrap");
+    const templateItem = radioButton.closest(".cms-template-item");
+    if (!templateItem) {
+      console.error("No .cms-template-item found for the radio button:", radioButton);
+      return; // Exit if no template item is found
+    }
+
+    const slideWrap = templateItem.querySelector(".slide_wrap");
+    if (!slideWrap) {
+      console.error("No .slide_wrap found in the template item:", templateItem);
+      return; // Exit if no slide wrap is found
+    }
+
     if (radioButton.checked) {
       slideWrap.classList.add("active-slide");
       console.log(`Active slide added for: ${radioButton.value}`);
