@@ -263,43 +263,36 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Get all items with the class cms-template-item
+  const templateItems = document.querySelectorAll(".cms-template-item");
+
   // Function to update the active state
-  const updateActiveState = (radioButton) => {
-    const templateItem = radioButton.closest(".cms-template-item");
-    if (!templateItem) {
-      console.error("No .cms-template-item found for the radio button:", radioButton);
-      return; // Exit if no template item is found
-    }
+  const updateActiveState = () => {
+    templateItems.forEach((item) => {
+      const radioDiv = item.querySelector(".w-form-formradioinput");
+      const slideWrap = item.querySelector(".slide_wrap");
 
-    const slideWrap = templateItem.querySelector(".slide_wrap");
-    if (!slideWrap) {
-      console.error("No .slide_wrap found in the template item:", templateItem);
-      return; // Exit if no slide wrap is found
-    }
-
-    if (radioButton.checked) {
-      slideWrap.classList.add("active-slide");
-      console.log(`Active slide added for: ${radioButton.value}`);
-    } else {
-      slideWrap.classList.remove("active-slide");
-      console.log(`Active slide removed for: ${radioButton.value}`);
-    }
+      if (radioDiv.classList.contains("w--redirected-checked")) {
+        slideWrap.classList.add("active-slide");
+      } else {
+        slideWrap.classList.remove("active-slide");
+      }
+    });
   };
 
-  // Event delegation for radio buttons
-  document.addEventListener("change", (event) => {
-    // Check if the target is a radio button with the name "selected_template"
-    if (event.target.matches('input[name="selected_template"]')) {
-      const radioButton = event.target; // This is the actual radio button
-      console.log(`Radio button clicked: ${radioButton.value}`);
-      updateActiveState(radioButton);
-    }
+  // Set up a MutationObserver for each radio button's parent div
+  templateItems.forEach((item) => {
+    const radioDiv = item.querySelector(".w-form-formradioinput");
+    const observer = new MutationObserver(updateActiveState);
+
+    observer.observe(radioDiv, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
   });
 
-  // Initial call to set the active state for already loaded items
-  document.querySelectorAll('input[name="selected_template"]').forEach((radioButton) => {
-    updateActiveState(radioButton);
-  });
+  // Initial call to set the active state on page load
+  updateActiveState();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
