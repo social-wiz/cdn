@@ -263,36 +263,25 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Get all items with the class cms-template-item
-  const templateItems = document.querySelectorAll(".cms-template-item");
-
   // Function to update the active state
-  const updateActiveState = () => {
-    templateItems.forEach((item) => {
-      const radioDiv = item.querySelector(".w-form-formradioinput");
-      const slideWrap = item.querySelector(".slide_wrap");
-
-      if (radioDiv.classList.contains("w--redirected-checked")) {
-        slideWrap.classList.add("active-slide");
-      } else {
-        slideWrap.classList.remove("active-slide");
-      }
-    });
+  const updateActiveState = (radioDiv) => {
+    const slideWrap = radioDiv.closest(".cms-template-item").querySelector(".slide_wrap");
+    if (radioDiv.classList.contains("w--redirected-checked")) {
+      slideWrap.classList.add("active-slide");
+    } else {
+      slideWrap.classList.remove("active-slide");
+    }
   };
 
-  // Set up a MutationObserver for each radio button's parent div
-  templateItems.forEach((item) => {
-    const radioDiv = item.querySelector(".w-form-formradioinput");
-    const observer = new MutationObserver(updateActiveState);
-
-    observer.observe(radioDiv, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
+  // Set up event listeners for all radio buttons
+  document.querySelectorAll(".w-form-formradioinput").forEach((radioDiv) => {
+    radioDiv.addEventListener("change", () => updateActiveState(radioDiv));
   });
 
   // Initial call to set the active state on page load
-  updateActiveState();
+  document.querySelectorAll(".w-form-formradioinput").forEach((radioDiv) => {
+    updateActiveState(radioDiv);
+  });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -330,30 +319,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/*
-document.addEventListener("DOMContentLoaded", function () {
-  const fontSelect = document.getElementById("select_font");
-  const fontItems = document.querySelectorAll(".font-item");
-
-  fontSelect.addEventListener("change", function () {
-    const selectedFont = fontSelect.value;
-
-    fontItems.forEach((item) => {
-      const fontName = item.querySelector(".font-name").textContent;
-
-      // Check if the selected font matches the font item
-      if (fontName === selectedFont) {
-        item.style.display = "block"; // Show the selected font item
-      } else {
-        item.style.display = "none"; // Hide the others
-      }
-    });
-  });
-
-  // Trigger change event on page load to set the initial state
-  fontSelect.dispatchEvent(new Event("change"));
-});
-*/
 
 // Function to handle color change for any element
 function setColorPicker(inputId, elementId, property = "backgroundColor") {
@@ -486,3 +451,28 @@ document.addEventListener("DOMContentLoaded", function () {
     firstOption.disabled = true;
   }
 });
+
+/*
+document.addEventListener("DOMContentLoaded", function () {
+  const fontSelect = document.getElementById("select_font");
+  const fontItems = document.querySelectorAll(".font-item");
+
+  fontSelect.addEventListener("change", function () {
+    const selectedFont = fontSelect.value;
+
+    fontItems.forEach((item) => {
+      const fontName = item.querySelector(".font-name").textContent;
+
+      // Check if the selected font matches the font item
+      if (fontName === selectedFont) {
+        item.style.display = "block"; // Show the selected font item
+      } else {
+        item.style.display = "none"; // Hide the others
+      }
+    });
+  });
+
+  // Trigger change event on page load to set the initial state
+  fontSelect.dispatchEvent(new Event("change"));
+});
+*/
