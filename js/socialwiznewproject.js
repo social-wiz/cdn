@@ -263,25 +263,36 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Get all items with the class cms-template-item
+  const templateItems = document.querySelectorAll(".cms-template-item");
+
   // Function to update the active state
-  const updateActiveState = (radioDiv) => {
-    const slideWrap = radioDiv.closest(".cms-template-item").querySelector(".slide_wrap");
-    if (radioDiv.classList.contains("w--redirected-checked")) {
-      slideWrap.classList.add("active-slide");
-    } else {
-      slideWrap.classList.remove("active-slide");
-    }
+  const updateActiveState = () => {
+    templateItems.forEach((item) => {
+      const radioDiv = item.querySelector(".w-form-formradioinput");
+      const slideWrap = item.querySelector(".slide_wrap");
+
+      if (radioDiv.classList.contains("w--redirected-checked")) {
+        slideWrap.classList.add("active-slide");
+      } else {
+        slideWrap.classList.remove("active-slide");
+      }
+    });
   };
 
-  // Set up event listeners for all radio buttons
-  document.querySelectorAll(".w-form-formradioinput").forEach((radioDiv) => {
-    radioDiv.addEventListener("change", () => updateActiveState(radioDiv));
+  // Set up a MutationObserver for each radio button's parent div
+  templateItems.forEach((item) => {
+    const radioDiv = item.querySelector(".w-form-formradioinput");
+    const observer = new MutationObserver(updateActiveState);
+
+    observer.observe(radioDiv, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
   });
 
   // Initial call to set the active state on page load
-  document.querySelectorAll(".w-form-formradioinput").forEach((radioDiv) => {
-    updateActiveState(radioDiv);
-  });
+  updateActiveState();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
